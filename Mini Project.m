@@ -49,7 +49,7 @@ t = 0:0.01:20; % time bounds
 
 %% Input vectors
 % Input for only x direction motion
-u = [5*ones(size(t)); 5*ones(size(t))]'; 
+%u = [5*ones(size(t)); 5*ones(size(t))]'; 
 
 % Input for only y direction motion
 %u = [5*ones(size(t)); -5*ones(size(t))]'; 
