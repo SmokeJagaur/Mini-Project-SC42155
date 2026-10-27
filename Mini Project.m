@@ -10,11 +10,20 @@ m_p = 0.5; % mass printer head
 %J_left = 0; % left motor disk inertia
 %J_right = J_left; % right motor disk inertia
 r = 0.01; % radius of motor disk
+r_p = 0.005; % idle pulley radius 
+b_theta = 1e-6; % viscous friction for the bearing
+c = b_theta/r_p^2; %equivalent belt damping for each pulley bearing
 
+% motor and bearings
 J = 5e-6; % assuming both motor disks to have same inertia
 M_eff = m_p + (2/r^2)*J;
-b_x = 0.2; %linear bearing friction x-direction
-b_y = 0.2; %linear bearing friction y-direction
+
+b_linx = 0.2; %linear bearing friction x-direction
+b_liny = 0.2; %linear bearing friction y-direction
+
+beq_x = b_linx + 8*c; % all bearings rotate for movement along x
+beq_y = b_liny + 4*c; % bearings on the printer gantry do not rotate
+
 K_m = 0.05; %transducer electrical-mechanical
 
 % motor circuit
@@ -22,7 +31,7 @@ R_m = 5; % resistance
 L_m = 5e-3; % Inductance
 
 % in structure form
-printer = struct('r', r, 'Km', K_m, 'meff', M_eff, 'bx', b_x, 'by', b_y, ...
+printer = struct('r', r, 'Km', K_m, 'meff', M_eff, 'bx', beq_x, 'by', beq_y, ...
            'Lm', L_m, 'Rm', R_m);
 %% Constraints
 dx = 0.5;
@@ -32,8 +41,8 @@ dy = 0.5;
 
 A = [[0 0 1 0 0 0]
     [0 0 0 1 0 0]
-    [0 0 -(b_x/M_eff) 0 K_m/(M_eff*r) K_m/(M_eff*r)]
-    [0 0 0 -(b_y/M_eff) K_m/(M_eff*r) -K_m/(M_eff*r)]
+    [0 0 -(beq_x/M_eff) 0 K_m/(M_eff*r) K_m/(M_eff*r)]
+    [0 0 0 -(beq_y/M_eff) K_m/(M_eff*r) -K_m/(M_eff*r)]
     [0 0 -K_m/(r*L_m) -K_m/(r*L_m) -R_m/L_m 0]
     [0 0 -K_m/(r*L_m) K_m/(r*L_m) 0 -R_m/L_m]];
 
