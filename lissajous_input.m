@@ -2,7 +2,7 @@
 % x = a*sin(nx*phi + delta),  y = b*sin(ny*phi),  phi = 2*pi*q(t)
 % nx, ny: integer frequency ratio, delta: phase shift (pi/2 starts at (a,0))
 function [u, ref] = lissajous_input(t, a, b, nx, ny, delta, T, p) % 0<=t<=T
-    [q, qd, qdd, qddd] = smoothstep7(t, T);   % clamped: zero derivatives outside [0,T]
+    [q, qd, qdd, qddd] = smoothstep7(t, T);   
 
     % curve parameter and its derivatives
     phi    = 2*pi*q;
