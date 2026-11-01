@@ -1,6 +1,6 @@
 clear; clc; 
 
-%% PARAMETERS
+%% parameters
 rho = 1240; c = 1800; k_th = 0.13; % assuming material printed is PLA
 rhoc  = rho*c;  kappa = k_th/rhoc;          
 d = 0.4e-3;  A = d^2;                       
@@ -10,7 +10,6 @@ L = pi*sqrt(2*(a_ax^2 + b_ax^2));  % approximate ellipse perimeter
 T_noz = 220; T_plate = 60; T_amb = 25;  
 h_air = 10;  h_plate = 300;           
 
-%% DERIVED QUANTITIES
 a_air   = h_air*3*d/(A*rhoc);         
 a_plate = h_plate*d/(A*rhoc);            
 
@@ -24,7 +23,7 @@ K_max = ceil(t_max/dt);
 n_save = 20;   % storing Temperature values every 20steps
 n_store = ceil(K_max/n_save); % number of Temperature vectors stored
 
-%% INITIALISATION
+%% initialization
 T = zeros(N,1);  n = 0;  % n = number of active cells
 Tmax = zeros(1,K_max); Tmin = Tmax; Tmean = Tmax;
 % Matrix to store temperature value across filament across time
@@ -32,10 +31,10 @@ T_hist = NaN(N,n_store);
 t_hist = zeros(1,n_store); % corresponding time for each temperature column
 j = 0;
 
-%% TIME MARCHING
+%% Time marchine
 for k = 1:K_max
     t = (k-1)*dt;
-
+    
     % domain growth, one new cell added while printing (N)
     n_new = min(N,k);
     T(n+1:n_new) = T_noz;
